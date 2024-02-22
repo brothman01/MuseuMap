@@ -86,12 +86,12 @@ add_action( 'init', 'mm_map_cpt', 0 );
 
 
 
-		// load and start CMB2.
-		if ( file_exists( dirname( __FILE__ ) . '/vendor/cmb2/init.php' ) ) {
-			require_once dirname( __FILE__ ) . '/vendor/cmb2/init.php';
-		} elseif ( file_exists( dirname( __FILE__ ) . '/vendor/CMB2/init.php' ) ) {
-			require_once dirname( __FILE__ ) . '/vendor/CMB2/init.php';
-		}
+// load and start CMB2.
+if ( file_exists( dirname( __FILE__ ) . '/vendor/cmb2/init.php' ) ) {
+	require_once dirname( __FILE__ ) . '/vendor/cmb2/init.php';
+} elseif ( file_exists( dirname( __FILE__ ) . '/vendor/CMB2/init.php' ) ) {
+	require_once dirname( __FILE__ ) . '/vendor/CMB2/init.php';
+}
 
 // add fields via CMB2 to map CPT
 function mm_register_map_metabox__fields() {
@@ -129,33 +129,32 @@ function mm_register_map_metabox__fields() {
 add_action( 'cmb2_admin_init', 'mm_register_map_metabox__fields' );
 
 
-    /**
-	* Add the block to the WordPress block editor
-	*
-	* @since 1.0
-	*/
-	function mm_create_block() {
+/**
+* Add the block to the WordPress block editor
+*
+* @since 1.0
+*/
+function mm_create_block() {
+	register_block_type( __DIR__ . '/wordpress-block/build' );
+}
 
-		register_block_type( __DIR__ . '/wordpress-block/build' );
-
-	}
-    add_action( 'init', 'mm_create_block' );
+add_action( 'init', 'mm_create_block' );
 
 
-    /**
-	* Enqueue the block to the fronmt end after react has been loaded.
-	*
-	* @since 1.0
-	*/
-    function mm_create_block_enqueue_styles() {
+/**
+* Enqueue the block to the fronmt end after react has been loaded.
+*
+* @since 1.0
+*/
+function mm_create_block_enqueue_styles() {
 
-		// enqueue the react to be used on the front end.
+	// enqueue the react to be used on the front end.
 
-		wp_register_script( 'index', plugin_dir_url( __FILE__ ) . 'wordpress-block/build/index.js', array( 'wp-element' ), '1.0.0', true );
-		wp_enqueue_script( 'index' );
+	wp_register_script( 'index', plugin_dir_url( __FILE__ ) . 'wordpress-block/build/index.js', array( 'wp-element' ), '1.0.0', true );
+	wp_enqueue_script( 'index' );
 
-		// enqueue bootstrap.
-		wp_enqueue_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css', array(), '1.0.0' );
-	}
+	// enqueue bootstrap.
+	wp_enqueue_style( 'bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css', array(), '1.0.0' );
+}
 
-    add_action( 'wp_enqueue_scripts', 'mm_create_block_enqueue_styles' );
+add_action( 'wp_enqueue_scripts', 'mm_create_block_enqueue_styles' );
